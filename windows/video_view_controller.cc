@@ -41,11 +41,7 @@ VideoViewController::VideoViewController(
 
 VideoViewController::~VideoViewController()
 {
-
-  for (auto itr = renderers_.begin(); itr != renderers_.end(); itr++)
-  {
-    itr->second->Dispose();
-  }
+  Dispose();
 }
 
 void VideoViewController::HandleMethodCall(
@@ -131,6 +127,11 @@ void VideoViewController::HandleMethodCall(
 
     result->Success(flutter::EncodableValue(true));
   }
+  else if (method.compare("dispose") == 0)
+  {
+    Dispose();
+    result->Success(flutter::EncodableValue(true));
+  }
   else if (method.compare("updateTextureRenderData") == 0)
   {
   }
@@ -177,4 +178,13 @@ bool VideoViewController::DestroyTextureRender(int64_t textureId)
     return true;
   }
   return false;
+}
+
+void VideoViewController::Dispose()
+{
+  for (const auto &entry : renderers_)
+  {
+    entry.second->Dispose();
+  }
+  renderers_.clear();
 }

@@ -88,7 +88,7 @@ final advanced = [
   if (!kIsWeb) {'name': 'AudioSpectrum', 'widget': const AudioSpectrum()},
   if (!kIsWeb)
     {'name': 'MediaRecorder', 'widget': const MediaRecorderExample()},
-  if (!kIsWeb) {'name': 'PushVideoFrame', 'widget': const PushVideoFrame()},
+  {'name': 'PushVideoFrame', 'widget': const PushVideoFrame()},
   // {'name': 'PushAudioFrame', 'widget': const PushAudioFrame()},
   if (!kIsWeb)
     {'name': 'PushEncodedVideoFrame', 'widget': const PushEncodedVideoFrame()},

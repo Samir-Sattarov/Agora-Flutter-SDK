@@ -55,7 +55,7 @@ class _State extends State<PushVideoFrame> {
     await _engine.initialize(RtcEngineContext(
       appId: config.appId,
     ));
-    await _engine.setLogFilter(LogFilterType.logFilterError);
+    // await _engine.setLogFilter(LogFilterType.logFilterError);
 
     _engine.registerEventHandler(RtcEngineEventHandler(
       onError: (ErrorCodeType err, String msg) {
@@ -72,6 +72,7 @@ class _State extends State<PushVideoFrame> {
         logSink.log(
             '[onUserJoined] connection: ${connection.toJson()} remoteUid: $rUid elapsed: $elapsed');
         setState(() {
+          if(rUid != 123) return;
           remoteUid.add(rUid);
         });
       },
@@ -102,19 +103,34 @@ class _State extends State<PushVideoFrame> {
     await _loadImageByteData();
 
     await _engine.startPreview(sourceType: VideoSourceType.videoSourceCustom);
-
-    setState(() {
-      _isReadyPreview = true;
-    });
   }
 
   Future<void> _joinChannel() async {
-    await _engine.joinChannel(
-      token: config.token,
-      channelId: _controller.text,
-      uid: config.uid,
+    await (_engine as RtcEngineEx).joinChannelEx(
+      token: '',
+      connection: const RtcConnection(
+        channelId: '<TEST_CHANNEL_ID>',
+        localUid: 456,
+      ),
       options: const ChannelMediaOptions(
-        channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
+        clientRoleType: ClientRoleType.clientRoleBroadcaster,
+        publishMicrophoneTrack: false,
+        publishCameraTrack: false,
+      ),
+    );
+  }
+
+  Future<void> _joinChannel2() async {
+    await (_engine as RtcEngineEx).joinChannelEx(
+      token: '',
+      connection: const RtcConnection(
+        channelId: '<TEST_CHANNEL_ID>',
+        localUid: 123,
+      ),
+      options: const ChannelMediaOptions(
+        publishCustomVideoTrack: true,
+        autoSubscribeAudio: false,
+        autoSubscribeVideo: false,
         clientRoleType: ClientRoleType.clientRoleBroadcaster,
       ),
     );
@@ -162,14 +178,23 @@ class _State extends State<PushVideoFrame> {
   Widget build(BuildContext context) {
     return ExampleActionsWidget(
       displayContentBuilder: (context, isLayoutHorizontal) {
-        if (!_isReadyPreview) return Container();
+        if (remoteUid.isEmpty) return Container();
+        // return AgoraVideoView(
+        //   controller: VideoViewController(
+        //     rtcEngine: _engine,
+        //     canvas: const VideoCanvas(
+        //       uid: 0,
+        //       sourceType: VideoSourceType.videoSourceCustom,
+        //     ),
+        //     useFlutterTexture: true,
+        //   ),
+        // );
         return AgoraVideoView(
-          controller: VideoViewController(
+          controller: VideoViewController.remote(
             rtcEngine: _engine,
-            canvas: const VideoCanvas(
-              uid: 0,
-              sourceType: VideoSourceType.videoSourceCustom,
-            ),
+            useFlutterTexture: true,
+            canvas: VideoCanvas(uid: remoteUid.first),
+            connection: RtcConnection(channelId: _controller.text),
           ),
         );
       },
@@ -194,6 +219,17 @@ class _State extends State<PushVideoFrame> {
                 )
               ],
             ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: ElevatedButton(
+                    onPressed: _joinChannel2,
+                    child: Text('${isJoined ? 'Leave' : 'Join'} channel'),
+                  ),
+                )
+              ],
+            ),
             const SizedBox(
               height: 20,
             ),
@@ -204,7 +240,7 @@ class _State extends State<PushVideoFrame> {
             ),
             const Text('Push Image as Video Frame'),
             ElevatedButton(
-              onPressed: isJoined ? _pushVideoFrame : null,
+              onPressed: isJoined ? _pushVideoFrame : _pushVideoFrame,
               child: const Text('Push Video Frame'),
             ),
           ],

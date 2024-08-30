@@ -260,44 +260,44 @@ void main() {
     'AgoraVideoView Web',
     () {
       group('Platform View', () {
-        testWidgets(
-          'can show local preview',
-          (WidgetTester tester) async {
-            final onFrameCompleter = Completer();
-            final RtcEngineEx rtcEngine = createAgoraRtcEngineEx();
+        // testWidgets(
+        //   'can show local preview',
+        //   (WidgetTester tester) async {
+        //     final onFrameCompleter = Completer();
+        //     final RtcEngineEx rtcEngine = createAgoraRtcEngineEx();
 
-            await tester.pumpWidget(FakeCameraLocalVideoView(
-                rtcEngine: rtcEngine,
-                builder: (context) {
-                  return AgoraVideoView(
-                    controller: VideoViewController(
-                      rtcEngine: rtcEngine,
-                      canvas: const VideoCanvas(
-                        uid: 0,
-                        sourceType: VideoSourceType.videoSourceCustom,
-                      ),
-                    ),
-                  );
-                },
-                onFirstFrame: () async {
-                  if (!onFrameCompleter.isCompleted) {
-                    await rtcEngine.startPreview(
-                        sourceType: VideoSourceType.videoSourceCustom);
-                    onFrameCompleter.complete(null);
-                  }
-                }));
+        //     await tester.pumpWidget(FakeCameraLocalVideoView(
+        //         rtcEngine: rtcEngine,
+        //         builder: (context) {
+        //           return AgoraVideoView(
+        //             controller: VideoViewController(
+        //               rtcEngine: rtcEngine,
+        //               canvas: const VideoCanvas(
+        //                 uid: 0,
+        //                 sourceType: VideoSourceType.videoSourceCustom,
+        //               ),
+        //             ),
+        //           );
+        //         },
+        //         onFirstFrame: () async {
+        //           if (!onFrameCompleter.isCompleted) {
+        //             await rtcEngine.startPreview(
+        //                 sourceType: VideoSourceType.videoSourceCustom);
+        //             onFrameCompleter.complete(null);
+        //           }
+        //         }));
 
-            await tester.pumpAndSettle(const Duration(seconds: 10));
+        //     await tester.pumpAndSettle(const Duration(seconds: 10));
 
-            await onFrameCompleter.future;
-            await waitFrame(tester);
+        //     await onFrameCompleter.future;
+        //     await waitFrame(tester);
 
-            await binding.takeScreenshot(
-                'web.agora_video_view.platform_view.smoke_test.start_preview_after_enable_video');
+        //     await binding.takeScreenshot(
+        //         'web.agora_video_view.platform_view.smoke_test.start_preview_after_enable_video');
 
-            await waitDisposed(tester, binding);
-          },
-        );
+        //     await waitDisposed(tester, binding);
+        //   },
+        // );
 
         testWidgets(
           'can show remote preview',

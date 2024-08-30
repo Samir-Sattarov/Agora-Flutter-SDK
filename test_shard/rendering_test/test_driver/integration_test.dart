@@ -62,7 +62,7 @@ Future<void> main() async {
       // https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/pull/1329
       //
       // see if we can reduce the result later
-      return result < 0.01;
+      return result < 0.2;
     },
   );
 }

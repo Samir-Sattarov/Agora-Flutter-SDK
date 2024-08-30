@@ -41,10 +41,8 @@ class _FakeCameraLocalVideoViewState extends State<FakeCameraLocalVideoView> {
   Future<void> _init() async {
     _rtcEngine = widget.rtcEngine;
 
-    String engineAppId = const String.fromEnvironment('TEST_APP_ID',
-        defaultValue: '<YOUR_APP_ID>');
     await _rtcEngine.initialize(RtcEngineContext(
-      appId: engineAppId,
+      appId: 'aab8b8f5a8cd4469a63042fcfafe7063',
       areaCode: AreaCode.areaCodeGlob.value(),
     ));
 

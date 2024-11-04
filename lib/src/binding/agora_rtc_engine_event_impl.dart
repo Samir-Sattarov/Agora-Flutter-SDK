@@ -400,7 +400,7 @@ class RtcEngineEventHandlerWrapper implements EventLoopEventHandler {
             source, width, height, elapsed);
         return true;
 
-      case 'onFirstLocalVideoFramePublished_263e4cd':
+      case 'onFirstLocalVideoFramePublished_2ad83d8':
         if (rtcEngineEventHandler.onFirstLocalVideoFramePublished == null) {
           return true;
         }
@@ -409,14 +409,13 @@ class RtcEngineEventHandlerWrapper implements EventLoopEventHandler {
             RtcEngineEventHandlerOnFirstLocalVideoFramePublishedJson.fromJson(
                 jsonMap);
         paramJson = paramJson.fillBuffers(buffers);
-        RtcConnection? connection = paramJson.connection;
+        VideoSourceType? source = paramJson.source;
         int? elapsed = paramJson.elapsed;
-        if (connection == null || elapsed == null) {
+        if (source == null || elapsed == null) {
           return true;
         }
-        connection = connection.fillBuffers(buffers);
-        rtcEngineEventHandler.onFirstLocalVideoFramePublished!(
-            connection, elapsed);
+
+        rtcEngineEventHandler.onFirstLocalVideoFramePublished!(source, elapsed);
         return true;
 
       case 'onFirstRemoteVideoDecoded_a68170a':
@@ -705,7 +704,7 @@ class RtcEngineEventHandlerWrapper implements EventLoopEventHandler {
         rtcEngineEventHandler.onLocalAudioStats!(connection, stats);
         return true;
 
-      case 'onLocalVideoStats_3ac0eb4':
+      case 'onLocalVideoStats_baa96c8':
         if (rtcEngineEventHandler.onLocalVideoStats == null) {
           return true;
         }
@@ -713,14 +712,13 @@ class RtcEngineEventHandlerWrapper implements EventLoopEventHandler {
         RtcEngineEventHandlerOnLocalVideoStatsJson paramJson =
             RtcEngineEventHandlerOnLocalVideoStatsJson.fromJson(jsonMap);
         paramJson = paramJson.fillBuffers(buffers);
-        RtcConnection? connection = paramJson.connection;
+        VideoSourceType? source = paramJson.source;
         LocalVideoStats? stats = paramJson.stats;
-        if (connection == null || stats == null) {
+        if (source == null || stats == null) {
           return true;
         }
-        connection = connection.fillBuffers(buffers);
         stats = stats.fillBuffers(buffers);
-        rtcEngineEventHandler.onLocalVideoStats!(connection, stats);
+        rtcEngineEventHandler.onLocalVideoStats!(source, stats);
         return true;
 
       case 'onRemoteVideoStats_2f43a70':

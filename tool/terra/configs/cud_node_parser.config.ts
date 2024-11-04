@@ -40,9 +40,23 @@ const deleteNodes = [
     parent_name: "IRtcEngineEventHandlerEx",
   },
   {
+    // onFirstLocalVideoFramePublished
+    __TYPE: CXXTYPE.MemberFunction,
+    name: "onFirstLocalVideoFramePublished",
+    namespaces: ["agora", "rtc"],
+    parent_name: "IRtcEngineEventHandlerEx",
+  },
+  {
     // onLocalVideoStateChanged
     __TYPE: CXXTYPE.MemberFunction,
     name: "onLocalVideoStateChanged",
+    namespaces: ["agora", "rtc"],
+    parent_name: "IRtcEngineEventHandlerEx",
+  },
+  {
+    // onLocalVideoStats
+    __TYPE: CXXTYPE.MemberFunction,
+    name: "onLocalVideoStats",
     namespaces: ["agora", "rtc"],
     parent_name: "IRtcEngineEventHandlerEx",
   },
@@ -321,20 +335,20 @@ const deleteNodes = [
     parent_name: "IMediaPlayer",
     namespaces: ["agora", "rtc"],
   },
-  // TODO(littlegnal): We should not config these custom nodes.
+  // TODO(littlegnal): We should not config these custom nodes by users.
   // agora::rtc::ext::IRtcEngine::destroyRendererByView
   {
     __TYPE: CXXTYPE.MemberFunction,
     name: "destroyRendererByView",
     parent_name: "IRtcEngine",
-    namespaces: ["agora", "rtc"],
+    namespaces: ["agora", "rtc", "ext"],
   },
   // agora::rtc::ext::IRtcEngine::destroyRendererByConfig
   {
     __TYPE: CXXTYPE.MemberFunction,
     name: "destroyRendererByConfig",
     parent_name: "IRtcEngine",
-    namespaces: ["agora", "rtc"],
+    namespaces: ["agora", "rtc", "ext"],
   },
   // agora::rtc::IRtcEngine::queryCameraFocalLengthCapability
   {

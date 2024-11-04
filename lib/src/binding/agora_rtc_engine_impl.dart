@@ -5255,7 +5255,7 @@ class RtcEngineImpl implements RtcEngine {
   @override
   AudioDeviceManager getAudioDeviceManager() {
     // Implementation template
-// final apiType = '${isOverrideClassName ? className : 'RtcEngine'}_getAudioDeviceManager';
+// final apiType = '${isOverrideClassName ? className : 'RtcEngine'}_queryInterface_257d192';
 // final param = createParams({
 // });
 // final callApiResult = await irisMethodChannel.invokeMethod(IrisMethodCall(apiType, jsonEncode(param), buffers:null));
@@ -5271,7 +5271,7 @@ class RtcEngineImpl implements RtcEngine {
   @override
   VideoDeviceManager getVideoDeviceManager() {
     // Implementation template
-// final apiType = '${isOverrideClassName ? className : 'RtcEngine'}_getVideoDeviceManager';
+// final apiType = '${isOverrideClassName ? className : 'RtcEngine'}_queryInterface_257d192';
 // final param = createParams({
 // });
 // final callApiResult = await irisMethodChannel.invokeMethod(IrisMethodCall(apiType, jsonEncode(param), buffers:null));
@@ -5287,7 +5287,7 @@ class RtcEngineImpl implements RtcEngine {
   @override
   MusicContentCenter getMusicContentCenter() {
     // Implementation template
-// final apiType = '${isOverrideClassName ? className : 'RtcEngine'}_getMusicContentCenter';
+// final apiType = '${isOverrideClassName ? className : 'RtcEngine'}_queryInterface_257d192';
 // final param = createParams({
 // });
 // final callApiResult = await irisMethodChannel.invokeMethod(IrisMethodCall(apiType, jsonEncode(param), buffers:null));
@@ -5303,7 +5303,7 @@ class RtcEngineImpl implements RtcEngine {
   @override
   MediaEngine getMediaEngine() {
     // Implementation template
-// final apiType = '${isOverrideClassName ? className : 'RtcEngine'}_getMediaEngine';
+// final apiType = '${isOverrideClassName ? className : 'RtcEngine'}_queryInterface_257d192';
 // final param = createParams({
 // });
 // final callApiResult = await irisMethodChannel.invokeMethod(IrisMethodCall(apiType, jsonEncode(param), buffers:null));
@@ -5319,7 +5319,7 @@ class RtcEngineImpl implements RtcEngine {
   @override
   LocalSpatialAudioEngine getLocalSpatialAudioEngine() {
     // Implementation template
-// final apiType = '${isOverrideClassName ? className : 'RtcEngine'}_getLocalSpatialAudioEngine';
+// final apiType = '${isOverrideClassName ? className : 'RtcEngine'}_queryInterface_257d192';
 // final param = createParams({
 // });
 // final callApiResult = await irisMethodChannel.invokeMethod(IrisMethodCall(apiType, jsonEncode(param), buffers:null));
@@ -5335,7 +5335,7 @@ class RtcEngineImpl implements RtcEngine {
   @override
   H265Transcoder getH265Transcoder() {
     // Implementation template
-// final apiType = '${isOverrideClassName ? className : 'RtcEngine'}_getH265Transcoder';
+// final apiType = '${isOverrideClassName ? className : 'RtcEngine'}_queryInterface_257d192';
 // final param = createParams({
 // });
 // final callApiResult = await irisMethodChannel.invokeMethod(IrisMethodCall(apiType, jsonEncode(param), buffers:null));

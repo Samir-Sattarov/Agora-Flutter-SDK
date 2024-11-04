@@ -23,7 +23,7 @@ using namespace agora::iris;
 namespace {
 class RendererDelegate : public agora::iris::VideoFrameObserverDelegate {
 public:
-  RendererDelegate(void *renderer) : renderer_(renderer), pre_width_(0), pre_height_(0) { }
+  RendererDelegate(void *renderer) : renderer_(renderer) { }
     
   void OnVideoFrameReceived(const void *videoFrame,
                             const IrisRtcVideoFrameConfig &config, bool resize) override {
@@ -36,15 +36,11 @@ public:
             return;
         }
         
-        int tmpWidth = vf->width;
-        int tmpHeight = vf->height;
-        bool is_resize = pre_width_ != tmpWidth || pre_height_ != tmpHeight;
-        pre_width_ = tmpWidth;
-        pre_height_ = tmpHeight;
-        
         CVPixelBufferRef _Nullable pixelBuffer = reinterpret_cast<CVPixelBufferRef>(vf->pixelBuffer);
         if (pixelBuffer) {
-            if (is_resize) {
+            if (resize) {
+              int tmpWidth = vf->width;
+              int tmpHeight = vf->height;
               dispatch_async(dispatch_get_main_queue(), ^{
                   [renderer.channel invokeMethod:@"onSizeChanged"
                                      arguments:@{@"width": @(tmpWidth),
@@ -64,7 +60,7 @@ public:
             }
             dispatch_semaphore_signal(renderer.lock);
             
-            if (renderer.textureRegistry && renderer.isDirtyBuffer) {
+            if (renderer.isDirtyBuffer) {
                 [renderer.textureRegistry textureFrameAvailable:renderer.textureId];
             }
         }
@@ -73,8 +69,6 @@ public:
 
 public:
   void *renderer_;
-  int pre_width_;
-  int pre_height_;
 };
 }
 
@@ -110,7 +104,7 @@ public:
 }
 
 - (void)updateData:(NSNumber *)uid channelId:(NSString *)channelId videoSourceType:(NSNumber *)videoSourceType videoViewSetupMode:(NSNumber *)videoViewSetupMode {
-    IrisRtcVideoFrameConfig config;
+    IrisRtcVideoFrameConfig config = EmptyIrisRtcVideoFrameConfig;
     config.video_frame_format = agora::media::base::VIDEO_PIXEL_FORMAT::VIDEO_CVPIXEL_NV12;
     config.uid = [uid unsignedIntValue];
     config.video_source_type = [videoSourceType intValue];
@@ -120,25 +114,18 @@ public:
       strcpy(config.channelId, "");
     }
     config.video_view_setup_mode = [videoViewSetupMode intValue];
-        config.observed_frame_position = agora::media::base::VIDEO_MODULE_POSITION::POSITION_POST_CAPTURER | agora::media::base::VIDEO_MODULE_POSITION::POSITION_PRE_RENDERER;
     
     self.delegateId = self.irisRtcRendering->AddVideoFrameObserverDelegate(config, self.delegate);
 }
 
 - (void)dispose {
-    if (self.irisRtcRendering) {
-        self.irisRtcRendering->RemoveVideoFrameObserverDelegate(self.delegateId);
-        self.irisRtcRendering = NULL;
-    }
+    self.irisRtcRendering->RemoveVideoFrameObserverDelegate(self.delegateId);
     if (self.delegate) {
         delete self.delegate;
         self.delegate = NULL;
     }
-    if (self.textureRegistry) {
-        [self.textureRegistry unregisterTexture:self.textureId];
-        self.textureRegistry = NULL;
-    }
-    if (self.buffer_cache && self.isDirtyBuffer) {
+    [self.textureRegistry unregisterTexture:self.textureId];
+    if (self.isDirtyBuffer) {
       CVPixelBufferRelease(self.buffer_cache);
       self.buffer_cache = NULL;
     }

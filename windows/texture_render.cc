@@ -33,6 +33,7 @@ TextureRender::TextureRender(flutter::BinaryMessenger *messenger,
 
 TextureRender::~TextureRender()
 {
+    Dispose();
 }
 
 int64_t TextureRender::texture_id() { return texture_id_; }
@@ -117,11 +118,10 @@ TextureRender::CopyPixelBuffer(size_t width, size_t height)
 
 void TextureRender::UpdateData(unsigned int uid, const std::string &channelId, unsigned int videoSourceType, unsigned int videoViewSetupMode)
 {
-    IrisRtcVideoFrameConfig config;
+    IrisRtcVideoFrameConfig config = EmptyIrisRtcVideoFrameConfig;
     config.uid = uid;
     config.video_source_type = videoSourceType;
     config.video_frame_format = agora::media::base::VIDEO_PIXEL_FORMAT::VIDEO_PIXEL_RGBA;
-    config.observed_frame_position = agora::media::base::VIDEO_MODULE_POSITION::POSITION_POST_CAPTURER | agora::media::base::VIDEO_MODULE_POSITION::POSITION_PRE_RENDERER;
     if (!channelId.empty())
     {
         strcpy_s(config.channelId, channelId.c_str());
@@ -150,9 +150,7 @@ void TextureRender::Dispose()
 
     if (registrar_ && texture_id_ != -1)
     {
-        auto self = this;
-        registrar_->UnregisterTexture(texture_id_, [self]()
-                                      { delete self; });
+        registrar_->UnregisterTexture(texture_id_);
 
         registrar_ = nullptr;
         texture_id_ = -1;

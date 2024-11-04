@@ -41,7 +41,6 @@ VideoViewController::VideoViewController(
 
 VideoViewController::~VideoViewController()
 {
-  Dispose();
 }
 
 void VideoViewController::HandleMethodCall(
@@ -155,16 +154,15 @@ int64_t VideoViewController::CreateTextureRender(
     unsigned int videoViewSetupMode)
 {
   agora::iris::IrisRtcRendering *iris_rtc_rendering = reinterpret_cast<agora::iris::IrisRtcRendering *>(irisRtcRenderingHandle);
-  auto textureRender = new TextureRender(
+  std::unique_ptr<TextureRender> textureRender = std::make_unique<TextureRender>(
       messenger_,
       texture_registrar_,
       iris_rtc_rendering);
-
   int64_t texture_id = textureRender->texture_id();
 
-  textureRender->UpdateData(uid, channelId, videoSourceType, videoViewSetupMode);
+  textureRender.get()->UpdateData(uid, channelId, videoSourceType, videoViewSetupMode);
 
-  renderers_[texture_id] = textureRender;
+  renderers_[texture_id] = std::move(textureRender);
   return texture_id;
 }
 
